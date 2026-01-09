@@ -1,0 +1,248 @@
+Generative Instagram with AI - Feature List
+📋 Project Overview Features
+Generative Instagram App: Full-stack application for AI-generated images
+
+AI Image Generation: Uses DALL·E 2 API to create images from prompts
+
+Social Sharing Platform: Share AI-generated images with others
+
+Like System: Heart-based engagement system
+
+Feed Display: Chronological feed of published images
+
+🛠️ Technical Stack Features
+Frontend: Next.js 16.1.1 with App Router, React 19.2.3
+
+Backend: Next.js API Routes (Node.js)
+
+Database ORM: Prisma 7.2.0 with Neon adapter
+
+Database: PostgreSQL via Neon.com (serverless)
+
+AI Service: OpenAI DALL·E 2 API integration
+
+Testing: Vitest 4.0.16 test framework
+
+Package Manager: pnpm
+
+🗄️ Database & ORM Features (TS.3.3)
+Database Schema Features
+PublishedImage Model: Complete data model with all required fields
+
+Field Types: Proper SQL to TypeScript type mappings
+
+Default Values: Automatic defaults for hearts and createdAt
+
+Field Mapping: Snake_case to camelCase field name mapping
+
+Constraints: Required fields and data validation at schema level
+
+Prisma Configuration Features
+Neon Adapter: Serverless PostgreSQL adapter configuration
+
+Connection Pooling: Efficient database connection management
+
+WebSocket Support: Configured for Node.js environment
+
+SSL Support: Secure database connections with sslmode=require
+
+CRUD Operations Features
+Create: Save new published images to database
+
+Read: Retrieve single and multiple image records
+
+Update: Modify existing records (hearts count)
+
+Delete: Remove records from database
+
+Batch Operations: Support for bulk operations
+
+Query Features
+Pagination: Limit and skip parameters for large datasets
+
+Sorting: Order by creation date (newest first)
+
+Counting: Get total record counts for pagination
+
+Filtering: Where clause support for specific queries
+
+🌐 API Architecture Features (TS.3.4)
+API Endpoint 1: POST /api/generate
+AI Image Generation: Generate images using DALL·E 2 API
+
+Prompt Validation: Required, non-empty string validation
+
+API Integration: OpenAI API call with proper parameters
+
+Error Handling: Comprehensive error responses
+
+Response Format: Consistent JSON response structure
+
+API Endpoint 2: POST /api/publish
+Image Publishing: Save generated images to database
+
+Field Validation: Validate both imageUrl and prompt fields
+
+Database Persistence: Create records in published_images table
+
+Default Values: Automatic setting of hearts and createdAt
+
+HTTP Status Codes: Proper use of 201 for created resources
+
+API Endpoint 3: GET /api/feed
+Feed Retrieval: Get paginated list of published images
+
+Pagination Parameters: Support for page and limit query params
+
+Sorting: Automatic newest-first ordering
+
+Total Count: Include total records and page count in response
+
+Input Validation: Validate and sanitize query parameters
+
+API Endpoint 4: PUT /api/feed
+Heart Updates: Increment/decrement hearts count
+
+Atomic Operations: Prevent race conditions in updates
+
+Resource Validation: Verify image exists before update
+
+Input Validation: Validate ID and hearts values
+
+Optimistic Updates: Support for immediate UI feedback
+
+🎨 Frontend Features
+Generate Page Features
+Prompt Input: Text area for entering image generation prompts
+
+Image Generation: Button to trigger AI image creation
+
+Loading States: Visual feedback during API calls
+
+Image Display: Show generated images with prompts
+
+Publishing Flow: Publish generated images to feed
+
+Error Display: User-friendly error messages
+
+Feed Page Features
+Image Grid/List: Display published images in organized layout
+
+Image Metadata: Show prompt, hearts count, and creation date
+
+Heart Interaction: Clickable heart buttons for engagement
+
+Pagination Controls: Load more or page navigation
+
+Optimistic Updates: Immediate UI feedback for interactions
+
+Infinite Scroll/Load More: Progressive loading of content
+
+📊 Testing Features
+Test Configuration
+Vitest Setup: Complete test framework configuration
+
+Test Environment: Node.js test environment
+
+Database Setup: Automatic database setup/teardown for tests
+
+Test Hooks: BeforeAll, beforeEach, afterEach lifecycle hooks
+
+Test Coverage
+Schema Tests: Database model and field validation
+
+API Endpoint Tests: All 4 API endpoints thoroughly tested
+
+Error Cases: Edge cases and error condition testing
+
+Happy Path: Success scenario testing
+
+Integration Tests: End-to-end API functionality
+
+📁 Project Structure Features
+Modular Architecture: Clean separation of concerns
+
+API Routes: Organized by feature in app/api directory
+
+Pages Structure: Next.js App Router organization
+
+Documentation: Comprehensive docs directory
+
+Configuration Files: Centralized config management
+
+🔧 Configuration & Environment Features
+Environment Variables: Secure credential management
+
+Example Config: .env.example file for easy setup
+
+Git Ignore: Security best practices for sensitive files
+
+Database Configuration: Proper connection string formatting
+
+API Key Management: Secure OpenAI API key handling
+
+📚 Documentation Features
+API Documentation: Complete endpoint specifications
+
+Architecture Diagram: Visual system design documentation
+
+Data Flow Documentation: Process and workflow descriptions
+
+Setup Instructions: Step-by-step project setup guide
+
+Troubleshooting Guide: Common issues and solutions
+
+🧪 Development & Quality Features
+Type Safety: TypeScript throughout the project
+
+Code Organization: Consistent file structure
+
+Error Handling: Comprehensive error management
+
+Logging: Development and production logging
+
+Validation: Input validation at multiple levels
+
+🔄 Workflow Features
+Database Migrations: Version-controlled schema changes
+
+Prisma Studio: Visual database management tool
+
+Development Server: Hot reload and development tools
+
+Build Process: Production build optimization
+
+Test Runner: Automated test execution
+
+🛡️ Security Features
+Input Sanitization: Protection against injection attacks
+
+API Key Protection: Environment variable management
+
+Database Security: SSL-enabled connections
+
+Error Message Control: Non-revealing error messages
+
+Rate Limiting: Built-in API usage controls
+
+📱 User Experience Features
+Responsive Design: Works on multiple screen sizes
+
+Loading States: User feedback during operations
+
+Error Recovery: Graceful error handling and recovery
+
+Confirmation Messages: Success and failure notifications
+
+Intuitive Navigation: Clear page and feature organization
+
+🔌 Integration Features
+OpenAI API Integration: Seamless DALL·E 2 connectivity
+
+Database Integration: Efficient PostgreSQL connectivity
+
+RESTful API Design: Standard HTTP practices
+
+Frontend-Backend Integration: Smooth data flow between layers
+
+External Service Integration: Support for additional services

@@ -1,0 +1,5 @@
+Placeholder: Add architecture diagram image at docs/architecture-diagram.png
+Client Layer (React/Next.js) -> API Routes (Next.js) -> OpenAI DALL·E 2
+API Routes -> Prisma ORM -> Neon PostgreSQL
+
+Create a PNG showing boxes and arrows as described in the project spec.
