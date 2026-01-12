@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+* { box-sizing: border-box; padding: 0; margin: 0; }
+
+html, body { max-width: 100vw; overflow-x: hidden; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Helvetica Neue', sans-serif; }
+
+/* Dark Instagram-like theme */
+body {
+  color: #e6e6e6;
+  background: #000000;
+  min-height: 100vh;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+input, textarea { font-family: inherit; }
+
+/* Compact utility tweaks */
+.container-tight { max-width: 980px; margin: 0 auto; padding: 12px; }
+/* Square-ish containers with thin borders */
+.card { background: #0b0b0b; border: 1px solid #1f1f1f; border-radius: 4px; }
+.card-flat { background: #0b0b0b; border: 1px solid #1f1f1f; border-radius: 4px; }
+
+/* Profile story ring gradient */
+.story-ring { display: inline-grid; place-items: center; padding: 2px; border-radius: 50%; background: linear-gradient(45deg, #feda75, #f58529, #dd2a7b, #8134af); }
+.story-inner { background: #000; padding: 2px; border-radius: 50%; }
+.profile-pic { width: 44px; height: 44px; border-radius: 50%; display: block; }
+
+/* Icons and action bar */
+.icon-btn { color: #e6e6e6; opacity: 0.98; background: transparent; border: none; padding: 6px; display: inline-flex; align-items: center; justify-content: center; }
+.icon-btn:hover { opacity: 0.85; }
+
+/* Tighter post layout */
+.post { border: 1px solid #1f1f1f; border-radius: 4px; margin-bottom: 10px; overflow: hidden; }
+.post-header, .post-footer { padding: 8px 10px; }
+.post-media img { width: 100%; display: block; }
+.post-body { padding: 8px 10px 10px 10px; }
+
+/* Small text and time formats */
+.muted { color: #9a9a9a; font-size: 13px; }
+.username { font-weight: 600; color: #eaeaea; }
+
+/* Modal-style generate area */
+.generate-modal { max-width: 900px; margin: 24px auto; background: #0b0b0b; border: 1px solid #1f1f1f; border-radius: 6px; padding: 14px; }
+
+/* Blue action buttons */
+.btn-blue { background: linear-gradient(90deg,#0095f6,#0066cc); color: #fff; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 600; }
+.btn-blue:disabled { opacity: 0.6; }
+
+/* compact inputs */
+.input-compact { background: #0b0b0b; border: 1px solid #1f1f1f; color: #e6e6e6; padding: 8px; border-radius: 4px; }
+
+/* small footer links */
+.sidebar { border-left: 1px solid #151515; padding-left: 16px; }
+
+/* Header */
+.site-header { background: #000; border-bottom: 1px solid #1f1f1f; position: sticky; top: 0; z-index: 50; }
+
+/* Likes */
+.likes-count { margin-top: 6px; font-weight: 700; color: #ffffff; }
+
+/* Comment input */
+.comment-row { display:flex; gap:8px; align-items:center; }
+.comment-row input { flex:1; min-width:0; }
+
+/* Sidebar sticky */
+.sticky-sidebar { position: sticky; top: 80px; }
+
+/* Action bar and icons */
+.action-bar { display:flex; align-items:center; justify-content:space-between; padding: 8px 10px; }
+.action-bar .left-actions { display:flex; gap:12px; align-items:center; }
+.action-bar .right-actions { display:flex; align-items:center; }
+.action-icon svg { width:24px; height:24px; fill: none; stroke: #e6e6e6; stroke-width:1.6; }
+.bookmark-btn svg { width:20px; height:20px; stroke:#e6e6e6; }
+
+.view-comments { color:#9a9a9a; margin-top:6px; font-size:13px; }
+
+.post-btn { background:transparent; color:#0095f6; border:none; padding:6px 8px; font-weight:700; cursor:pointer; }
+.post-btn:disabled { opacity:0.5; cursor:default; }
+
+/* tighter icons spacing like Instagram */
+.action-bar .left-actions .icon-btn { padding:4px; }
+.post-media { background:#000 }
+
+/* Bottom-of-post styling to match Instagram-like layout */
+.likes-count { margin-top:8px; font-weight:700; color:#ffffff; font-size:14px; }
+.caption { margin-top:6px; }
+.caption .username { font-weight:700; margin-right:6px; }
+.caption .caption-text { color:#e6e6e6; }
+.post-divider { height:1px; background:#151515; margin:10px 0; }
+
+.post-footer.comment-area { border-top:1px solid #151515; padding-top:10px; margin-top:10px; }
+.comment-row { display:flex; gap:12px; align-items:center; }
+.comment-emoji { width:36px; height:36px; border-radius:50%; display:inline-grid; place-items:center; border:1px solid #1f1f1f; background:#0b0b0b; }
+.comment-emoji svg { width:18px; height:18px; }
+.comment-row input { flex:1; min-width:0; background:transparent; border:none; outline:none; color:#e6e6e6; padding:8px 0; }
+.comment-row .post-btn { background:transparent; color:#0095f6; font-weight:600; border:none; padding:6px 10px; }
+
+.action-bar { padding:8px 10px; display:flex; align-items:center; justify-content:space-between; }
+.action-bar .left-actions { display:flex; gap:14px; }
+.action-bar .right-actions { display:flex; }
+.action-icon svg, .icon-btn svg { stroke:#e6e6e6; }
+
+/* Small corner icons in header (top-right) */
+.corner-icons { position:absolute; right:12px; top:12px; display:flex; gap:8px; }
+.corner-btn { width:34px; height:34px; display:inline-flex; align-items:center; justify-content:center; background:transparent; border:1px solid #1f1f1f; border-radius:6px; padding:4px; }
+.corner-btn svg { width:18px; height:18px; }
+.corner-btn:hover { background: rgba(255,255,255,0.02); }
+
+/* small helpers */
+.flex { display:flex; }
+.items-center { align-items:center; }
+.justify-between { justify-content:space-between; }
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #0b0b0b; }
+::-webkit-scrollbar-thumb { background: #2b2b2b; border-radius: 6px; }
+

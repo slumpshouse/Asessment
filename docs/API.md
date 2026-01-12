@@ -1,68 +1,116 @@
 # API Documentation
 
-## Endpoints Overview
+## Overview
+This API provides endpoints for generating AI images, publishing them to a feed, and managing user interactions.
 
-### 1. POST /api/generate
-Purpose: Generate an image using OpenAI DALL·E 2 API
+## Base URL
+All endpoints are relative to: `https://your-domain.com/api`
 
-Request Body:
-```
-{ "prompt": "string (required, non-empty)" }
-```
+## Endpoints
 
-Success Response (200):
-```
-{ "imageUrl": "https://...", "prompt": "a cute corgi puppy" }
-```
+### 1. Generate Image
+**POST** `/generate`
 
-Error Responses:
-- 400: Missing or invalid prompt
-- 500: OpenAI API error
+Generate an AI image using DALL·E 2.
 
-### 2. POST /api/publish
-Purpose: Save generated image to database
-
-Request Body:
-```
-{ "imageUrl": "string (required, non-empty)", "prompt": "string (required)" }
+#### Request Body
+```json
+{
+  "prompt": "string (required, non-empty)"
+}
 ```
 
-Success Response (201):
-```
-{ "id": 1, "imageUrl": "https://...", "prompt": "a cute corgi puppy", "hearts": 0, "createdAt": "2026-01-10T10:30:00.000Z" }
-```
-
-Error Responses:
-- 400: Missing or invalid fields
-- 500: Database error
-
-### 3. GET /api/feed
-Purpose: Retrieve paginated feed of published images
-
-Query Parameters:
-- page: integer (default: 1, min: 1)
-- limit: integer (default: 10, max: 50)
-
-Success Response (200):
-```
-{ "images": [ /* array */ ], "total": 25, "page": 1, "totalPages": 3 }
+Success Response (200)
+```json
+{
+  "imageUrl": "https://...",
+  "prompt": "the prompt used"
+}
 ```
 
-Error Responses:
-- 400: Invalid pagination parameters
-- 500: Database error
+Error Responses
+- 400 Bad Request: Missing or invalid prompt
+- 401 Unauthorized: Invalid OpenAI API key
+- 429 Too Many Requests: Rate limit exceeded
+- 500 Internal Server Error: Server error
 
-### 4. PUT /api/feed
-Purpose: Update hearts count for an image
+### 2. Publish Image
+**POST** `/publish`
 
-Request Body:
+Publish a generated image to the community feed.
+
+Request Body
+```json
+{
+  "imageUrl": "string (required, valid URL)",
+  "prompt": "string (required)"
+}
 ```
-{ "id": number, "hearts": number }
+
+Success Response (201 Created)
+```json
+{
+  "id": 1,
+  "imageUrl": "https://...",
+  "prompt": "A beautiful sunset",
+  "hearts": 0,
+  "createdAt": "2024-01-01T12:00:00.000Z"
+}
 ```
 
-Success Response (200): Updated object
+Error Responses
+- 400 Bad Request: Missing or invalid fields
+- 500 Internal Server Error: Database error
 
-Error Responses:
-- 400: Missing or invalid fields
-- 404: Image not found
-- 500: Database error
+### 3. Get Feed
+**GET** `/feed`
+
+Retrieve paginated feed of published images.
+
+Query Parameters
+- `page` (optional, default: 1): Page number
+- `limit` (optional, default: 10, max: 50): Items per page
+
+Success Response (200)
+```json
+{
+  "images": [ ... ],
+  "total": 50,
+  "page": 1,
+  "limit": 10,
+  "totalPages": 5
+}
+```
+
+Error Responses
+- 400 Bad Request: Invalid pagination parameters
+- 500 Internal Server Error: Database error
+
+### 4. Update Hearts
+**PUT** `/feed`
+
+Update the hearts (likes) count for an image.
+
+Request Body
+```json
+{
+  "id": "number (required, positive integer)",
+  "hearts": "number (required, non-negative integer)"
+}
+```
+
+Success Response (200)
+```json
+{
+  "id": 1,
+  "imageUrl": "https://...",
+  "prompt": "A beautiful sunset",
+  "hearts": 6,
+  "createdAt": "2024-01-01T12:00:00.000Z"
+}
+```
+
+Error Responses
+- 400 Bad Request: Invalid ID or hearts value
+- 404 Not Found: Image not found
+- 500 Internal Server Error: Database error

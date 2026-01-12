@@ -1,72 +1,88 @@
-import { NextResponse } from 'next/server';
-// import prisma from '@/prisma.config';
+import { prisma } from '../../../prisma.config';
 
 export async function GET(request) {
-  try {
-    const { searchParams } = new URL(request.url);
-    let page = parseInt(searchParams.get('page') || '1');
-    let limit = parseInt(searchParams.get('limit') || '10');
+	try {
+		const url = new URL(request.url);
+		const page = parseInt(url.searchParams.get('page')) || 1;
+		const limit = parseInt(url.searchParams.get('limit')) || 10;
 
-    if (isNaN(page) || page < 1) {
-      return NextResponse.json({ error: 'Invalid page parameter' }, { status: 400 });
-    }
-    if (isNaN(limit) || limit < 1) {
-      return NextResponse.json({ error: 'Invalid limit parameter' }, { status: 400 });
-    }
-    if (limit > 50) limit = 50;
+		if (page < 1) {
+			return Response.json({ error: 'Page must be a positive integer' }, { status: 400 });
+		}
 
-    const skip = (page - 1) * limit;
+		if (limit < 1 || limit > 50) {
+			const maxLimit = Math.min(50, Math.max(1, limit));
+			return Response.json({ error: `Limit must be between 1 and 50. Using ${maxLimit}` }, { status: 400 });
+		}
 
-    // TODO: Query database with prisma
-    // const [images, total] = await Promise.all([
-    //   prisma.publishedImage.findMany({ skip, take: limit, orderBy: { createdAt: 'desc' } }),
-    //   prisma.publishedImage.count()
-    // ]);
+		const safeLimit = Math.min(50, Math.max(1, limit));
+		const skip = (page - 1) * safeLimit;
 
-    // Placeholder
-    const images = [];
-    const total = 0;
-    const totalPages = Math.max(1, Math.ceil(total / limit));
+		const [images, total] = await Promise.all([
+			prisma.publishedImage.findMany({
+				skip,
+				take: safeLimit,
+				orderBy: { createdAt: 'desc' },
+			}),
+			prisma.publishedImage.count(),
+		]);
 
-    return NextResponse.json({ images, total, page, totalPages }, { status: 200 });
-  } catch (error) {
-    console.error('Feed GET API error:', error);
-    return NextResponse.json({ error: 'Failed to fetch feed' }, { status: 500 });
-  }
+		const totalPages = Math.ceil(total / safeLimit);
+
+		return Response.json({ images, total, page, limit: safeLimit, totalPages }, { status: 200 });
+	} catch (error) {
+		console.error('Error fetching feed:', error);
+		return Response.json({ error: 'Failed to fetch feed. Please try again.' }, { status: 500 });
+	}
 }
 
 export async function PUT(request) {
-  try {
-    const body = await request.json();
-    const { id, hearts } = body || {};
+	try {
+		const body = await request.json();
+		const { id, hearts } = body;
 
-    if (id === undefined || id === null) {
-      return NextResponse.json({ error: 'id is required' }, { status: 400 });
-    }
-    if (hearts === undefined || hearts === null) {
-      return NextResponse.json({ error: 'hearts is required' }, { status: 400 });
-    }
-    if (typeof id !== 'number' && isNaN(parseInt(id))) {
-      return NextResponse.json({ error: 'id must be a number' }, { status: 400 });
-    }
-    if (typeof hearts !== 'number' && isNaN(parseInt(hearts))) {
-      return NextResponse.json({ error: 'hearts must be a number' }, { status: 400 });
-    }
-    const parsedId = parseInt(id);
-    const parsedHearts = parseInt(hearts);
-    if (parsedHearts < 0) {
-      return NextResponse.json({ error: 'hearts must be non-negative' }, { status: 400 });
-    }
+		const errors = [];
+    
+		if (!id && id !== 0) {
+			errors.push('id is required');
+		} else if (typeof id !== 'number' || !Number.isInteger(id) || id < 1) {
+			errors.push('id must be a positive integer');
+		}
 
-    // TODO: Check existence and update via prisma
-    // const existing = await prisma.publishedImage.findUnique({ where: { id: parsedId } });
-    // if (!existing) return NextResponse.json({ error: 'Image not found' }, { status: 404 });
-    // const updated = await prisma.publishedImage.update({ where: { id: parsedId }, data: { hearts: parsedHearts } });
+		if (!hearts && hearts !== 0) {
+			errors.push('hearts is required');
+		} else if (typeof hearts !== 'number' || !Number.isInteger(hearts) || hearts < 0) {
+			errors.push('hearts must be a non-negative integer');
+		}
 
-    // Placeholder response
-    return NextResponse.json({ id: parsedId, imageUrl: 'https://example.com/image.jpg', prompt: 'Example prompt', hearts: parsedHearts, createdAt: new Date().toISOString() }, { status: 200 });
-  } catch (error) {
-    console.error('Feed PUT API error:', error);
-    return NextResponse.json({ error: 'Failed to update hearts' }, { status: 500 });
-  }
+		if (errors.length > 0) {
+			return Response.json({ error: 'Validation failed', details: errors }, { status: 400 });
+		}
+
+		const existingImage = await prisma.publishedImage.findUnique({ where: { id } });
+
+		if (!existingImage) {
+			return Response.json({ error: 'Image not found' }, { status: 404 });
+		}
+
+		const updatedImage = await prisma.publishedImage.update({ where: { id }, data: { hearts } });
+
+		return Response.json(updatedImage, { status: 200 });
+
+	} catch (error) {
+		console.error('Error updating hearts:', error);
+		if (error.code === 'P2025') {
+			return Response.json({ error: 'Image not found' }, { status: 404 });
+		}
+		return Response.json({ error: 'Failed to update hearts. Please try again.' }, { status: 500 });
+	}
 }
+
+export async function POST() {
+	return Response.json({ error: 'Method not allowed' }, { status: 405 });
+}
+
+export async function DELETE() {
+	return Response.json({ error: 'Method not allowed' }, { status: 405 });
+}
+

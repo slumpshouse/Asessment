@@ -1,14 +1,9 @@
-import { defineConfig } from 'vitest/config';
+const { defineConfig } = require('vitest/config');
 
-export default defineConfig({
+module.exports = defineConfig({
   test: {
     environment: 'node',
-    globals: true,
+    setupFiles: ['./setup/testSetup.mjs'],
     hookTimeout: 60000,
-    setupFiles: ['./setup/testSetup.js'],
-    include: ['tests/**/*.test.js'],
-    coverage: {
-      reporter: ['text', 'json', 'html']
-    }
-  }
+  },
 });
